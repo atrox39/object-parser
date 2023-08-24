@@ -1,7 +1,7 @@
 {
-  "name": "object-parser",
+  "name": "vanilla-object-parser",
   "version": "1.0.0",
-  "description": "Simple object parser",
+  "description": "Simple vanilla object parser",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
