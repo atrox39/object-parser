@@ -1,6 +1,6 @@
 {
   "name": "vanilla-object-parser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Simple vanilla object parser",
   "main": "index.js",
   "scripts": {
