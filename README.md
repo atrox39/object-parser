@@ -1,7 +1,9 @@
 # vanilla-object-parser
+
 Simple vanilla object parser
 
 ### Sample schema
+
 ```js
 const userSchema = {
   user: {
@@ -15,6 +17,7 @@ const userSchema = {
 ```
 
 ### Sample input
+
 ```js
 const obj = {
   user: {
@@ -22,13 +25,14 @@ const obj = {
     lastName: 'Wick',
     password: '123456',
   },
-};
+}
 ```
 
 ### Sample usage
-```js
-const { getObjectBySchema } = require('vanilla-object-parser');
-const output = getObjectBySchema(obj, userSchema);
 
-console.log(output);
+```js
+const { getObjectBySchema } = require('vanilla-object-parser')
+const output = getObjectBySchema(obj, userSchema)
+
+console.log(output)
 ```
