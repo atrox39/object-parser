@@ -1,4 +1,4 @@
-const { getObjectBySchema } = require('../index')
+const { getObjectBySchema } = require('../index');
 
 describe('Match object', () => {
   const schema = {
@@ -9,7 +9,7 @@ describe('Match object', () => {
         lastName: { type: 'string' },
       },
     },
-  }
+  };
 
   const data = {
     user: {
@@ -18,12 +18,12 @@ describe('Match object', () => {
       password: '123456',
     },
     service: 'google.com',
-  }
+  };
 
   it('Schema for user', () => {
-    const temp = JSON.parse(JSON.stringify(data))
-    delete temp.user.password
-    delete temp.service
-    expect(getObjectBySchema(data, schema)).toMatchObject(temp)
-  })
-})
+    const temp = JSON.parse(JSON.stringify(data));
+    delete temp.user.password;
+    delete temp.service;
+    expect(getObjectBySchema(data, schema)).toMatchObject(temp);
+  });
+});

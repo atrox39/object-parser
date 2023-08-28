@@ -1,44 +1,52 @@
-const deepCopy = (obj) => JSON.parse(JSON.stringify(obj))
+const deepCopy = (obj) => JSON.parse(JSON.stringify(obj));
 
 const getTypeValue = (value, itemType, defaultValue) => {
   if (itemType === 'boolean') {
-    return value === null || value === undefined ? defaultValue : Boolean(value)
+    return value === null || value === undefined
+      ? defaultValue
+      : Boolean(value);
   }
   if (itemType === 'date') {
-    return value instanceof Date ? value.toISOString() : defaultValue
+    return value instanceof Date ? value.toISOString() : defaultValue;
   }
   if (['float', 'int', 'number'].includes(itemType)) {
     if (isNaN(value) || value === null || value === undefined) {
-      return defaultValue
+      return defaultValue;
     }
-    return parseFloat(value)
+    return parseFloat(value);
   }
   return value === undefined || value === null
     ? defaultValue
-    : value?.toString()
-}
+    : value?.toString();
+};
 
 const processObject = (obj, schema, item) => {
-  const subResult = {}
+  const subResult = {};
   for (const subItem in schema[item].properties) {
-    const subProperty = schema[item].properties[subItem]
-    const subItemType = subProperty.type
-    const defaultValue = subProperty.default
+    const subProperty = schema[item].properties[subItem];
+    const subItemType = subProperty.type;
+    const defaultValue = subProperty.default;
     subResult[subItem] = getTypeValue(
       obj[item]?.[subItem],
       subItemType,
       defaultValue
-    )
+    );
   }
-  return Object.keys(subResult).length > 0 ? subResult : undefined
-}
+  return Object.keys(subResult).length > 0 ? subResult : undefined;
+};
 
 const processArray = (obj, schema, item) => {
   const { items } = schema[item]
   if (items.type === 'object') {
     const processedElements = obj[item]
       ?.filter((element) => typeof element === 'object')
-      .map((element) => processItem(element, items.properties))
+      .map((element) => {
+        const result = {};
+        Object.keys(element).forEach((key) => {
+          result[key] = processItem(element, items.properties, key, items.properties[key]);
+        });
+        return result;
+      });
     return processedElements.length > 0 ? processedElements : undefined
   }
   if (items.type === 'any') {
@@ -56,29 +64,29 @@ const processArray = (obj, schema, item) => {
 
 const processItem = (obj, schema, item, type) => {
   if (['string', 'number', 'boolean', 'date', 'float', 'int'].includes(type)) {
-    const defaultValue = schema[item]?.default
-    return getTypeValue(obj[item], type, defaultValue)
+    const defaultValue = schema[item]?.default;
+    return getTypeValue(obj[item], type, defaultValue);
   }
   if (type === 'object') {
-    return processObject(obj, schema, item)
+    return processObject(obj, schema, item);
   }
   if (type === 'array') {
-    return processArray(obj, schema, item)
+    return processArray(obj, schema, item);
   }
-  return obj[item] // Handle other types as-is
-}
+  return obj[item]; // Handle other types as-is
+};
 
 exports.getObjectBySchema = (deep, schema) => {
-  const obj = deepCopy(deep)
-  const result = {}
+  const obj = deepCopy(deep);
+  const result = {};
 
   for (const item in schema) {
-    const processedValue = processItem(obj, schema, item, schema[item].type)
+    const processedValue = processItem(obj, schema, item, schema[item].type);
 
     if (processedValue !== undefined) {
-      result[item] = processedValue
+      result[item] = processedValue;
     }
   }
 
-  return result
-}
+  return result;
+};

@@ -13,7 +13,7 @@ const userSchema = {
       lastName: { type: 'string' },
     },
   },
-}
+};
 ```
 
 ### Sample input
@@ -25,14 +25,14 @@ const obj = {
     lastName: 'Wick',
     password: '123456',
   },
-}
+};
 ```
 
 ### Sample usage
 
 ```js
-const { getObjectBySchema } = require('vanilla-object-parser')
-const output = getObjectBySchema(obj, userSchema)
+const { getObjectBySchema } = require('vanilla-object-parser');
+const output = getObjectBySchema(obj, userSchema);
 
-console.log(output)
+console.log(output);
 ```
