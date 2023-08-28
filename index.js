@@ -36,31 +36,36 @@ const processObject = (obj, schema, item) => {
 };
 
 const processArray = (obj, schema, item) => {
-  const { items } = schema[item]
+  const { items } = schema[item];
   if (items.type === 'object') {
     const processedElements = obj[item]
       ?.filter((element) => typeof element === 'object')
       .map((element) => {
         const result = {};
         Object.keys(element).forEach((key) => {
-          result[key] = processItem(element, items.properties, key, items.properties[key]);
+          result[key] = processItem(
+            element,
+            items.properties,
+            key,
+            items.properties[key]
+          );
         });
         return result;
       });
-    return processedElements.length > 0 ? processedElements : undefined
+    return processedElements.length > 0 ? processedElements : undefined;
   }
   if (items.type === 'any') {
-    return JSON.parse(JSON.stringify(obj[item]))
+    return JSON.parse(JSON.stringify(obj[item]));
   }
   if (
     ['string', 'number', 'boolean', 'date', 'float', 'int'].includes(items.type)
   ) {
     const processedElements = obj[item]
       ?.filter((element) => typeof element === items.type)
-      .map((element) => getTypeValue(element, items.type))
-    return processedElements?.length > 0 ? processedElements : undefined
+      .map((element) => getTypeValue(element, items.type));
+    return processedElements?.length > 0 ? processedElements : undefined;
   }
-}
+};
 
 const processItem = (obj, schema, item, type) => {
   if (['string', 'number', 'boolean', 'date', 'float', 'int'].includes(type)) {
